@@ -23,25 +23,14 @@ const fetchReviewsOvertime = async (req, res, next) => {
         // const data = [
         //     { label: "2019-02-10", reviewCount: 12, averageScore: 1.2 },
         //   ]
-        const Datapoints = averagescore[0]
+        const datapoints = averagescore[0]
         let groupedDate = "";
-        let datapoints = []
         if (daysDiff > 0 && daysDiff < 30) {
             groupedDate = "Grouped daily"
-            datapoints = Datapoints
         } else if (daysDiff > 29 && daysDiff < 90) {
             groupedDate = "Grouped weekly"
-            datapoints = Datapoints.filter((dp, index, self) => {
-                const week = moment(dp.date_created).week()
-                return self.indexOf(week) === index;
-            } )
         } else {
             groupedDate = "Grouped monthly"
-            console.log("Datapoints length: ", Datapoints.length)
-            datapoints = Datapoints.filter((dp, index, self) => {
-                const month = moment(dp.date_created).format("M")
-                return self.indexOf(month) === index;
-            } )
         }
         res.status(200).json({
             data: {
